@@ -12,10 +12,19 @@ public class ObjectOnLaunch : MonoBehaviour
 
     [SerializeField]
     bool canLaunch = false;
+
     public bool CanLaunch
     {
         get {return canLaunch;}
         set {canLaunch = value;}
+    }
+
+    private Vector2 handDir;
+
+    public Vector2 LaunchDir
+    {
+        get { return handDir; }  
+        set { handDir = value; }
     }
 
     [SerializeField]
@@ -69,8 +78,8 @@ public class ObjectOnLaunch : MonoBehaviour
         }
         if(isReadyLaunch && target)
         {
-            Vector3 dir = target.position - transform.position;
-            _rigidBody.AddForce(dir*2, ForceMode2D.Impulse);
+            // Vector3 dir = target.position - transform.position;
+            _rigidBody.AddForce(handDir*2, ForceMode2D.Impulse);
             speed = _rigidBody.velocity.magnitude;
         }
     }

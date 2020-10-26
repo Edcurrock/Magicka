@@ -46,6 +46,7 @@ public class MVPlayerController : MonoBehaviour
     private bool isFlipped = false;
 
     public ObjectOnLaunch objectToLaunch;
+    [SerializeField] MyEnviromentController environmentController = null;
     
     public bool CanMove { get; set; }
     void Start()
@@ -84,12 +85,8 @@ public class MVPlayerController : MonoBehaviour
         if(!isCastingMagic)
             arm.right = isFlipped ? -handDir : handDir;
 
-        if(mouse.leftButton.wasPressedThisFrame)
-        {
-            WandAnimation();
-        }
-
-        if(mouse.rightButton.isPressed)
+        
+        if(mouse.leftButton.isPressed)
         {   if(objectToLaunch == null)
             {  
                 Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, 3f, launchObjectMask);
@@ -101,12 +98,20 @@ public class MVPlayerController : MonoBehaviour
             {
                 
                 objectToLaunch.CanLaunch = true;
+                objectToLaunch.LaunchDir = handDir;
             }
         }
         else if(objectToLaunch)
         {
             objectToLaunch.CanLaunch = false;
             objectToLaunch = null;
+        }
+
+        if (mouse.rightButton.wasPressedThisFrame)
+        {
+            environmentController.AddPoint(screenPoint);
+            if(environmentController.canUse)
+                WandAnimation();
         }
     }
 
